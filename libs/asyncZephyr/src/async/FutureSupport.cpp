@@ -34,7 +34,8 @@ void FutureSupport::notify() { k_event_set(&_eventObject, FUTURE_SUPPORT_BITS_TO
 
 void FutureSupport::assertTaskContext()
 {
-    estd_assert(verifyTaskContext());
+    ETL_ASSERT(verifyTaskContext(),
+        ETL_ERROR_GENERIC("Wrong task context"));
 }
 
 bool FutureSupport::verifyTaskContext()

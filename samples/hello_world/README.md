@@ -25,7 +25,7 @@ set(OPENBSW_DIR
 
 ...
 
-include(${OPENBSW_DIR}/Filelists.cmake)
+add_subdirectory(${OPENBSW_DIR} openbsw)
 ```
 
 2. Zephyr is found by the following line...
@@ -47,7 +47,7 @@ target_link_libraries(app PUBLIC util)
 ## Kconfig configuration
 
 Since OpenBSW's `util` library is written in `C++`, and is dependent on the standard library,
-the following are added to `prj.conf`
+the following are added to `prj.conf`...
 ```
 CONFIG_CPP=y
 CONFIG_REQUIRES_FULL_LIBCPP=y

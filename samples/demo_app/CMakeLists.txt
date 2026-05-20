@@ -8,6 +8,18 @@ set(INCLUDE_OPENBSW_LIBS_BSP
     OFF
     CACHE BOOL "Include openbsw/libs/bsp/ in build")
 
+set(BUILD_EXECUTABLE
+    "Zephyr_OpenBSW_DemoApp"
+    CACHE STRING "Name of build executable")
+
+set(BUILD_TARGET_PLATFORM
+    "ZEPHYR"
+    CACHE STRING "Name of Target Platform")
+
+set(BUILD_TARGET_RTOS
+    "ZEPHYR"
+    CACHE STRING "Name of Target OS")
+
 # make sure zephyr compiler options are also set for cmake modules not depending on zephyr
 add_compile_options($<TARGET_PROPERTY:zephyr_interface,INTERFACE_COMPILE_OPTIONS>)
 
@@ -24,11 +36,13 @@ if (CONFIG_CAN)
         add_compile_definitions(PLATFORM_SUPPORT_UDS=1)
 endif()
 
-include(${OPENBSW_DIR}/Filelists.cmake)
+add_subdirectory(${OPENBSW_DIR} openbsw)
 
 target_include_directories(app
         PRIVATE
         include)
+
+target_include_directories(etl BEFORE INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include/etl_profile)
 
 target_sources(app 
         PRIVATE 
@@ -79,6 +93,7 @@ target_link_libraries(app PUBLIC
         transportRouterSimple
         uds
         etl
+        etlImpl
         bspZephyr)
 
 if (CONFIG_NETWORKING)

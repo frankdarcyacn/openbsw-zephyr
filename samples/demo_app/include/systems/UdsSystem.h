@@ -50,7 +50,7 @@ public:
     void run() override;
     void shutdown() override;
 
-    DiagDispatcher2& getUdsDispatcher();
+    DiagDispatcher& getUdsDispatcher();
 
     IAsyncDiagHelper& getAsyncDiagHelper();
 
@@ -80,8 +80,10 @@ private:
     DiagJobRoot _jobRoot;
     DiagnosticSessionControl _diagnosticSessionControl;
     CommunicationControl _communicationControl;
-    DiagnosisConfiguration<5, 1, 16> _udsConfiguration;
-    DiagDispatcher2 _udsDispatcher;
+    DiagnosisConfiguration _udsConfiguration;
+    ::etl::pool<IncomingDiagConnection, 5> _connectionPool;
+    ::etl::queue<TransportJob, 16> _sendJobQueue;
+    DiagDispatcher _udsDispatcher;
     uds::declare::AsyncDiagHelper<5> _asyncDiagHelper;
 
     ReadDataByIdentifier _readDataByIdentifier;

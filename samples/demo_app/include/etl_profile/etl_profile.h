@@ -1,0 +1,13 @@
+// Copyright 2026 Accenture.
+
+#ifndef __ETL_PROFILE_H__
+#define __ETL_PROFILE_H__
+
+#define ETL_TARGET_DEVICE_GENERIC
+#define ETL_TARGET_OS_NONE
+
+#define ETL_NO_STL
+#define ETL_FORMAT_NO_FLOATING_POINT
+#define ETL_FORCE_STD_INITIALIZER_LIST
+
+#endif // ETL_PROFILE_H

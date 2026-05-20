@@ -28,4 +28,4 @@ manifest:
 
     - name: openbsw
       remote: github_eclipse_openbsw
-      revision: 82397e004ee1d8bd38426c5d25239bf986146ce5
+      revision: 1578c18f7ce3b4be1410419f466919fb40cb5471

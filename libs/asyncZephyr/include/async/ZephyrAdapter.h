@@ -11,7 +11,7 @@
 #include "zephyr/kernel.h"
 
 #include <etl/array.h>
-#include <util/estd/assert.h>
+#include <etl/error_handler.h>
 
 namespace async
 {
@@ -280,7 +280,8 @@ template<ContextType Context, size_t StackSize>
 ZephyrAdapter<Binding>::TaskImpl<Context, StackSize>::TaskImpl(
     char const* const name, TaskFunctionType const taskFunction, k_thread_stack_t* stack)
 {
-    estd_assert(StackSize >= sizeof(TaskInitializer));
+    ETL_ASSERT(StackSize >= sizeof(TaskInitializer),
+        ETL_ERROR_GENERIC("StackSize too small"));
     new (K_THREAD_STACK_BUFFER(stack))
         TaskInitializer(Context, name, _task, _timer, stack, StackSize, taskFunction);
 }

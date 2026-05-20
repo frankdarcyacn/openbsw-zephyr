@@ -6,10 +6,10 @@
 #include <can/CanLogger.h>
 #include <can/framemgmt/IFilteredCANFrameSentListener.h>
 #include <common/busid/BusId.h>
+#include <etl/error_handler.h>
 
 #include <platform/config.h>
 #include <platform/estdint.h>
-#include <util/estd/assert.h>
 
 #include <zephyr/device.h>
 #include <zephyr/drivers/can.h>
@@ -254,20 +254,21 @@ uint16_t ZephyrCanTransceiver::getHwQueueTimeout() const
 uint16_t ZephyrCanTransceiver::getFirstFrameId() const
 {
     // not implemented
-    estd_assert(false);
+    ETL_ASSERT(false, ETL_ERROR_GENERIC("Not implemented"));
+
     return INVALID_FRAME_ID;
 }
 
 void ZephyrCanTransceiver::resetFirstFrame()
 {
     // not implemented
-    estd_assert(false);
+    ETL_ASSERT(false, ETL_ERROR_GENERIC("Not implemented"));
 }
 
 ::can::ICanTransceiver::ErrorCode ZephyrCanTransceiver::open(::can::CANFrame const& /*frame*/)
 {
     // not implemented
-    estd_assert(false);
+    ETL_ASSERT(false, ETL_ERROR_GENERIC("Not implemented"));
     return can::ICanTransceiver::ErrorCode::CAN_ERR_ILLEGAL_STATE;
 }
 

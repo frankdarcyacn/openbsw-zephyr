@@ -34,8 +34,3 @@ uint64_t systemTicksToTimeUs(uint64_t ticks)
 {
     return k_cyc_to_us_floor64(ticks);
 }
-
-etl::chrono::high_resolution_clock::rep etl_get_high_resolution_clock()
-{
-    return etl::chrono::high_resolution_clock::rep{static_cast<int64_t>(getSystemTimeNs())};
-}
