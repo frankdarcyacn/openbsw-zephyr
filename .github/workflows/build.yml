@@ -9,16 +9,21 @@ jobs:
       steps:
         - name: Checkout repository
           uses: actions/checkout@v4
+          with:
+            path: openbsw-zephyr
 
         - name: Setup Zephyr project
           uses: zephyrproject-rtos/action-zephyr-setup@v1
           with:
-            app-path: .
+            base-path: ${{ github.workspace }}
+            app-path: ${{ github.workspace }}/openbsw-zephyr
+            sdk-version: 0.16.4
 
         - name: Install jq
           run: sudo apt install jq
 
         - name: Build applications for boards as specified in build_matrix.json
+          working-directory: openbsw-zephyr
           run: |
             set +e  # revert the default `set -e` so as to continue if one command fails
             exitvalue=0

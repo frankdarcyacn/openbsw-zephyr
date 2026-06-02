@@ -3,8 +3,7 @@
         "application": "samples/hello_world",
         "boards" : [
             {"name":"native_sim"},
-            {"name":"rpi_pico"},
-            {"name":"s32k148_evb"}
+            {"name":"rpi_pico"}
         ]
     },
     {
@@ -14,14 +13,7 @@
             {"name":"native_sim/native/64"},
             {"name":"rpi_pico"},
             {"name":"ucans32k1sic"},
-            {"name":"nucleo_g474re"},
-            {"name":"nucleo_h755zi_q/stm32h755xx/m7"},
-            {"name":"s32k148_evb"},
-            {
-                "name":"s32k148_evb", 
-                "shields": ["nxp_adtja1101"], 
-                "extra_conf": "boards/s32k148_evb_network.conf"
-            }
+            {"name":"nucleo_g474re"}
         ]
     }
 ]
