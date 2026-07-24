@@ -4,7 +4,7 @@ This repo provides adaptation libraries and sample code to help
 build applications for [Zephyr](https://www.zephyrproject.org/)
 that incorporate [OpenBSW](https://github.com/eclipse-openbsw/openbsw) libraries.
 
-Two example applications are provided.
+Two primary example applications are provided.
 
 * [hello_world](samples/hello_world/README.md) is a very simple example that shows the bare minimum configuration needed to build OpenBSW and Zephyr together.
 * [demo_app](samples/demo_app/README.md) is a full example that demonstrates some of OpenBSW's features working on Zephyr.

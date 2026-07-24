@@ -2,6 +2,9 @@
 
 #include "zephyrEthAdapter/udp/ZephyrDatagramSocket.h"
 #include <zephyr/net/net_pkt.h>
+#include <zephyr/net/net_if.h>
+#include <zephyr/net/igmp.h>  // For IPv4
+#include <zephyr/net/mld.h>   // For IPv6
 
 #include "zephyrEthAdapter/utils/EthHelper.h"
 
@@ -115,9 +118,52 @@ void ZephyrDatagramSocket::receivedCallback(struct net_context * /*ctx*/,
     net_pkt_unref(pkt);
 }
 
-AbstractDatagramSocket::ErrorCode ZephyrDatagramSocket::join(ip::IPAddress const& /*groupAddr*/)
+AbstractDatagramSocket::ErrorCode ZephyrDatagramSocket::join(ip::IPAddress const& groupAddr)
 {
-    // Not implemented
+    if (_netContext == nullptr)
+    {
+        logger::Logger::error(logger::UDP,
+            "ZephyrDatagramSocket::join(): network context not found!");
+        return ErrorCode::UDP_SOCKET_NOT_OK;
+    }
+
+    struct net_if *iface = net_context_get_iface(_netContext);
+    if (iface == NULL)
+    {
+        logger::Logger::error(logger::UDP,
+            "ZephyrDatagramSocket::join(): network interface not found!");
+        return ErrorCode::UDP_SOCKET_NOT_OK;
+    }
+
+    int ret = 0;
+    if (addressFamilyOf(groupAddr) == ip::IPAddress::IPV4)
+    {
+        struct in_addr addr4;
+        addr4.s4_addr32[0] = htonl(ip::ip4_to_u32(groupAddr));
+        ret = net_ipv4_igmp_join(iface, &addr4, NULL);
+    }
+    else
+    {
+        struct in6_addr addr6;
+        addr6.s6_addr32[0] = ip::ip6_to_u32(groupAddr, 0);
+        addr6.s6_addr32[1] = ip::ip6_to_u32(groupAddr, 1);
+        addr6.s6_addr32[2] = ip::ip6_to_u32(groupAddr, 2);
+        addr6.s6_addr32[3] = ip::ip6_to_u32(groupAddr, 3);
+        ret = net_ipv6_mld_join(iface, &addr6);
+    }
+
+    if(ret == -EALREADY)
+    {
+        logger::Logger::warn(logger::UDP,
+            "ZephyrDatagramSocket::join(): already joined multicast address!");
+    }
+    else if(ret < 0)
+    {
+        logger::Logger::error(logger::UDP,
+            "ZephyrDatagramSocket::join(): failed to join multicast group! ret=%d", ret);
+        return ErrorCode::UDP_SOCKET_NOT_OK;
+    }
+
     return ErrorCode::UDP_SOCKET_OK;
 }
 
